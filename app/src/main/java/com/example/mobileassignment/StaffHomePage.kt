@@ -1,5 +1,6 @@
 package com.example.mobileassignment
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -15,14 +16,14 @@ class StaffHomePage : AppCompatActivity() {
         val deleteBtn = findViewById<Button>(R.id.deletejobBtn)
 
         addBtn.setOnClickListener {
-            saveNewJobFunction()
+            startActivity(Intent(this, addJobActivity::class.java))
         }
 
-        backBtn.setOnClickListener {
-            backFunction()
+        editBtn.setOnClickListener {
+            startActivity(Intent(this, addJobActivity::class.java))
         }
-        addBtn.setOnClickListener {
-            saveNewJobFunction()
+        deleteBtn.setOnClickListener {
+            startActivity(Intent(this, addJobActivity::class.java))
         }
 
     }
