@@ -14,5 +14,16 @@ class StaffHomePage : AppCompatActivity() {
         val editBtn = findViewById<Button>(R.id.editjobBtn)
         val deleteBtn = findViewById<Button>(R.id.deletejobBtn)
 
+        addBtn.setOnClickListener {
+            saveNewJobFunction()
+        }
+
+        backBtn.setOnClickListener {
+            backFunction()
+        }
+        addBtn.setOnClickListener {
+            saveNewJobFunction()
+        }
+
     }
 }
