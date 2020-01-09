@@ -1,4 +1,4 @@
-package com.example.mobileassignment.jobList;
+package com.example.mobileassignment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mobileassignment.R;
+import com.example.mobileassignment.models.ViewJob;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.mobileassignment.addJob
+package com.example.mobileassignment
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,7 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mobileassignment.R
-import com.example.mobileassignment.StaffHomePage
+import com.example.mobileassignment.models.addJob
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.add_job.*
 import com.google.firebase.database.*
@@ -108,18 +107,27 @@ class addJobActivity : AppCompatActivity() {
                 jobCategory,
                 userID
             )
-            jobDatabase.child("Job").child(newJobid).setValue(jobb).addOnCompleteListener {
-                Toast.makeText(
-                    applicationContext,
-                    "Job Saved Successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
+            var maxid: Long = 0
+            jobDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists())
+                        maxid = dataSnapshot.childrenCount
+                    jobDatabase.child("Job").child((maxid+1).toString()).setValue(jobb).addOnCompleteListener {
+                        Toast.makeText(
+                            applicationContext,
+                            "Job Saved Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                addJobsPosition.setText("")
-                addJobsDescription.setText("")
-                addJobsSalary.setText("")
-                addJobsRequirement.setText("")
-            }
+                        addJobsPosition.setText("")
+                        addJobsDescription.setText("")
+                        addJobsSalary.setText("")
+                        addJobsRequirement.setText("")
+                    }
+                }
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+
         } else{
             Toast.makeText(
                 applicationContext,

@@ -1,4 +1,4 @@
-package com.example.mobileassignment.jobDetailsAndApplyList;
+package com.example.mobileassignment.models;
 
 public class cardViewApplication {
     private String userName;

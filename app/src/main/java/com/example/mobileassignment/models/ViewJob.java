@@ -1,10 +1,13 @@
-package com.example.mobileassignment.jobList;
+package com.example.mobileassignment.models;
 
 public class ViewJob {
     private String position;
     private String comName;
     private String desc;
     private String jobId;
+
+    public ViewJob(){
+    }
 
     public ViewJob(String position, String comName, String desc, String jobId) {
         this.position = position;

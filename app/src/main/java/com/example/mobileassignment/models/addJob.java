@@ -1,4 +1,4 @@
-package com.example.mobileassignment.addJob;
+package com.example.mobileassignment.models;
 
 public class addJob {
     private String jobid;

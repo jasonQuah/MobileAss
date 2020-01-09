@@ -1,17 +1,18 @@
-package com.example.mobileassignment.jobDetailsAndApplyList
+package com.example.mobileassignment
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobileassignment.R
-import com.example.mobileassignment.ViewApplicationActivity
+import com.example.mobileassignment.models.cardViewApplication
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.job_details.*
+import org.w3c.dom.Text
 import java.util.ArrayList
 
 class JobDetailsActivity : AppCompatActivity() {
@@ -34,14 +35,16 @@ class JobDetailsActivity : AppCompatActivity() {
 
         jobDatabase = FirebaseDatabase.getInstance().reference.child("Job")
 
+        var jobIID: String = "8"
+
         jobDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists())
                     maxid = p0.childrenCount
                 for (i in 1..maxid){
-                    if((i).toString().equals(jobId)){
-                        profiletxt.text =  "Position: "+ p0.child((i).toString()).child("position").value.toString()
-                        salarytxt.text =  p0.child((i).toString()).child("salary").value.toString()
+                    if((i).toString().equals(jobIID)){
+                        profiletxt.setText(p0.child((i).toString()).child("position").value.toString())
+                        salarytxt.setText(p0.child((i).toString()).child("salary").value.toString())
                         requirementtxt.text =  p0.child((i).toString()).child("requirement").value.toString()
                         descriptiontxt.text =  p0.child((i).toString()).child("desc").value.toString()
                         categorytxt.text =  p0.child((i).toString()).child("category").value.toString()
@@ -63,7 +66,7 @@ class JobDetailsActivity : AppCompatActivity() {
                 for (i in 1..maxid) {
                     if (p0.child((i).toString()).child("jobId").value.toString().equals(jobId)) {
                         var username: String = ""
-                        var userAddress: String = ""
+                        var userAddress = ""
                         var userAge: String = ""
                         var userId: String =
                             p0.child(i.toString()).child("userId").value.toString()

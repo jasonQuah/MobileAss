@@ -1,15 +1,15 @@
-package com.example.mobileassignment.jobList
+package com.example.mobileassignment
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mobileassignment.jobDetailsAndApplyList.JobDetailsActivity
-import com.example.mobileassignment.R
 import com.example.mobileassignment.models.User
+import com.example.mobileassignment.models.ViewJob
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.util.ArrayList
@@ -32,6 +32,12 @@ class ViewJobActivity : AppCompatActivity() {
         var mAuth = FirebaseAuth.getInstance().currentUser!!.uid
 
         val tv: TextView = findViewById(R.id.textView)
+        val bckBtn = findViewById<Button>(R.id.bckbutton)
+
+        bckBtn.setOnClickListener{
+            finish()
+            startActivity(Intent(this, StaffHomePage::class.java))
+        }
 
         jobDatabase = FirebaseDatabase.getInstance().reference.child("Job")
 

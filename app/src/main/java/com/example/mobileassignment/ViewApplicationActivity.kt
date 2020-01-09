@@ -2,7 +2,7 @@ package com.example.mobileassignment
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mobileassignment.jobDetailsAndApplyList.cardViewApplication
+import com.example.mobileassignment.models.cardViewApplication
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.user_apply_details.*
 import java.util.ArrayList

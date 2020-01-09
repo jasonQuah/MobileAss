@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mobileassignment.addJob.addJobActivity
-import com.example.mobileassignment.jobList.ViewJobActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class StaffHomePage : AppCompatActivity() {
