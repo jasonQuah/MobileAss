@@ -1,4 +1,4 @@
-package com.example.mobileassignment
+package com.example.mobileassignment.addJob
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,20 +8,12 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mobileassignment.models.Job
+import com.example.mobileassignment.R
+import com.example.mobileassignment.StaffHomePage
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.add_job.*
 import com.google.firebase.database.*
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.google.firebase.database.DataSnapshot
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.R.attr.name
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import com.example.mobileassignment.models.Category
 
 
 class addJobActivity : AppCompatActivity() {
@@ -103,30 +95,11 @@ class addJobActivity : AppCompatActivity() {
         val userID: String = mAuth.currentUser!!.uid
 
         jobDatabase = FirebaseDatabase.getInstance().getReference()
-        /*var database = FirebaseDatabase.getInstance()
-
-        var rootRef = database.reference
-
-        val userRef = rootRef.child("User").orderByChild("user_id").equalTo(userID)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (ds in dataSnapshot.children) {
-                    val username = ds.child("user_address").getValue(String::class.java)
-                    //Log.d(TAG, username)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                //Log.d(TAG, databaseError.getMessage()) //Don't ignore errors!
-            }
-        }
-        userRef.addListenerForSingleValueEvent(valueEventListener)*/
-
 
         val newJobid = jobDatabase.push().key
 
-        if (newJobid != null) {
-            val jobb = Job(
+        if (newJobid != null && !TextUtils.isEmpty(jobPosition) && !TextUtils.isEmpty(jobDescription) && !TextUtils.isEmpty(jobSalary) && !TextUtils.isEmpty(jobRequirement)) {
+            val jobb = addJob(
                 newJobid,
                 jobPosition,
                 jobDescription,
@@ -141,20 +114,24 @@ class addJobActivity : AppCompatActivity() {
                     "Job Saved Successfully",
                     Toast.LENGTH_SHORT
                 ).show()
+
+                addJobsPosition.setText("")
+                addJobsDescription.setText("")
+                addJobsSalary.setText("")
+                addJobsRequirement.setText("")
             }
+        } else{
+            Toast.makeText(
+                applicationContext,
+                "Job Saved failed",
+                Toast.LENGTH_SHORT
+            ).show()
         }
-        /*AuthStateListener { firebaseAuth ->
-                val firebaseUser = firebaseAuth.currentUser
-                if (firebaseUser != null) {
-                    val userId = firebaseUser.uid
-                    val userEmail = firebaseUser.email
-                }
-            }*/
+
     }
 
     private fun backFunction() {
         startActivity(Intent(this, StaffHomePage::class.java))
-
     }
 
     public fun retrieveData() {
@@ -166,19 +143,12 @@ class addJobActivity : AppCompatActivity() {
                 }
                     for (i in 1..maxid) {
                         spinnerDataList.add(p0.child((i).toString()).child("name").value.toString())
-                        /*for (item in p0.getChildren()) {
-
-                    spinnerDataList.add(item.getValue().toString())
-                }
-                adapter.notifyDataSetChanged()*/
                     }
                 adapter.notifyDataSetChanged()
 
             }
             override fun onCancelled(p0: DatabaseError) {
-
             }
         })
-
     }
 }

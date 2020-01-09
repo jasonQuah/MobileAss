@@ -1,80 +1,60 @@
 package com.example.mobileassignment.models;
 
 public class Job {
-    private String job_id;
-    private String job_Position;
-    private String job_description;
-    private String salary;
-    private String job_requirement;
-    private String category_name;
-    private String user_id;
+    private String position;
+    private String comName;
+    private String location;
+    private String condition;
+    private String jobId;
 
     public Job(){
     }
 
-    public Job(String job_id, String job_Position, String job_description, String salary, String job_requirement, String category_name, String user_id){
-        this.job_id = job_id;
-        this.job_Position = job_Position;
-        this.job_description = job_description;
-        this.salary = salary;
-        this.job_requirement = job_requirement;
-        this.category_name = category_name;
-        this.user_id = user_id;
+    public Job(String position, String comName, String location, String condition, String jobId) {
+        this.position = position;
+        this.comName = comName;
+        this.location = location;
+        this.condition = condition;
+        this.jobId = jobId;
     }
 
-    public String getJob_id() {
-        return job_id;
+    public String getJobId() {
+        return jobId;
     }
 
-    public void setJob_id(String job_id) {
-        this.job_id = job_id;
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
 
-    public String getJob_Position() {
-        return job_Position;
+    public String getPosition() {
+        return position;
     }
 
-    public void setJob_Position(String job_Position) {
-        this.job_Position = job_Position;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
-    public String getJob_description() {
-        return job_description;
+    public String getComName() {
+        return comName;
     }
 
-    public String getcategory_name() {
-        return category_name;
+    public void setComName(String comName) {
+        this.comName = comName;
     }
 
-    public void setJob_description(String job_description) {
-        this.job_description = job_description;
+    public String getLocation() {
+        return location;
     }
 
-    public String getSalary() {
-        return salary;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public void setSalary(String salary) {
-        this.salary = salary;
+    public String getCondition() {
+        return condition;
     }
 
-    public String getJob_requirement() {
-        return job_requirement;
-    }
-
-    public void setJob_requirement(String job_requirement) {
-        this.job_requirement = job_requirement;
-    }
-
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-    public void setCategory_name(String category_name){
-        this.category_name = category_name;
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }

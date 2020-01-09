@@ -18,9 +18,11 @@
         </activity>
         <activity android:name=".signup.SignUpActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".addJobActivity"></activity>
         <activity android:name=".StaffHomePage"></activity>
-        <activity android:name=".ViewJobActivity"></activity>
+        <activity android:name=".addJob.addJobActivity"></activity>
+        <activity android:name=".jobList.ViewJobActivity"></activity>
+        <activity android:name=".ViewApplicationActivity"></activity>
+        <activity android:name=".jobDetailsAndApplyList.JobDetailsActivity" />
 
     </application>
 

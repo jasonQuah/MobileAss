@@ -1,63 +1,50 @@
 package com.example.mobileassignment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.example.mobileassignment.models.Application
-import com.example.mobileassignment.models.Job
-import com.example.mobileassignment.models.User
-import com.google.firebase.auth.FirebaseAuth
+import androidx.appcompat.app.AppCompatActivity
+import com.example.mobileassignment.jobDetailsAndApplyList.cardViewApplication
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.user_apply_details.*
 import java.util.ArrayList
 
-class ViewApplicationActivity {
+class ViewApplicationActivity : AppCompatActivity() {
 
-    private var recyclerView: RecyclerView? = null
-    private var mListadapter: ViewJobActivity.ListAdapter? = null
-    private val data = ArrayList<Application>()
-    private val data1 = ArrayList<User>()
-    lateinit var applyDatabase: DatabaseReference
-    lateinit var userDatabase: DatabaseReference
+    private lateinit var userDatabase: DatabaseReference
+    private val data = ArrayList<cardViewApplication>()
+    var maxid: Long = 0
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.user_apply_details)
+        var userId: String = intent.getStringExtra("userId")
+        var userAge: String = intent.getStringExtra("userage")
+        var userName: String = intent.getStringExtra("userName")
+        var userAddress: String = intent.getStringExtra("userAddress")
 
-        val view = inflater.inflate(R.layout.job_details, container, false)
-
-        recyclerView = view.findViewById<View>(R.id.recyclerView2) as RecyclerView
-
-        val layoutManager = LinearLayoutManager(activity)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerView!!.layoutManager = layoutManager
-
-        applyDatabase = FirebaseDatabase.getInstance().getReference("Application")
-
-        applyDatabase.addValueEventListener(object : ValueEventListener {
+        userDatabase = FirebaseDatabase.getInstance().reference.child("User")
+        userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                if (p0!!.exists()) {
-                    data.clear()
-                    for (h in p0.children) {
-                        val job = h.getValue(Job::class.java)
-                        if (job!!.user_id == mAuth) {
-                            data.add(job!!)
-                        }
-
+                if (p0.exists())
+                    maxid = p0.childrenCount
+                for (i in 1..maxid) {
+                    if ((i).toString().equals(userId)) {
+                        usernametxt.text =
+                            userName
+                        agetxt.text =
+                            userAge
+                        addresstxt.text =
+                            userAddress
+                        phonetxt.text =
+                            p0.child((i).toString()).child("user_contactNo").value.toString()
+                        emailtxt.text =
+                            p0.child((i).toString()).child("user_email").value.toString()
                     }
-                    mListadapter = ListAdapter(data)
-                    recyclerView!!.adapter = mListadapter
                 }
             }
 
             override fun onCancelled(p0: DatabaseError) {
             }
         })
-
-
-
-
+    }
 }
