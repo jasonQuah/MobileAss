@@ -47,7 +47,7 @@ class ViewJobActivity : Fragment() {
                     data.clear()
                     for (h in p0.children) {
                         val job = h.getValue(Job::class.java)
-                        if (job!!.user_id != mAuth) {
+                        if (job!!.user_id == mAuth) {
                             data.add(job!!)
                         }
 
@@ -83,15 +83,15 @@ class ViewJobActivity : Fragment() {
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             internal var image: ImageView
+            internal var textViewPosition: TextView
             internal var textViewName: TextView
-            internal var textViewOwner: TextView
-            internal var textViewDate: TextView
+            internal var textViewDesc: TextView
 
             init {
                 this.image =  itemView.findViewById<View>(R.id.imageView3)as ImageView
-                this.textViewName = itemView.findViewById<View>(R.id.jobProfile) as TextView
-                this.textViewOwner = itemView.findViewById<View>(R.id.companyName) as TextView
-                this.textViewDate = itemView.findViewById<View>(R.id.jobDescription) as TextView
+                this.textViewPosition = itemView.findViewById<View>(R.id.jobProfile) as TextView
+                this.textViewName = itemView.findViewById<View>(R.id.companyName) as TextView
+                this.textViewDesc = itemView.findViewById<View>(R.id.jobDescription) as TextView
             }
         }
 
@@ -109,12 +109,13 @@ class ViewJobActivity : Fragment() {
                     break
                 }
             }
-            holder.textViewName.text = dataList[position].job_Position
-            holder.textViewOwner.text = oname
-            holder.textViewDate.text = dataList[position].job_description
+            holder.textViewPosition.text = dataList[position].job_Position
+            holder.textViewName.text = oname
+            holder.textViewDesc.text = dataList[position].job_description
 
             holder.itemView.setOnClickListener {v->
                 val i = Intent(v.context, JobDetailsActivity::class.java)
+
                 i.putExtra("companyName", oname)
                 i.putExtra("position", data[position].job_Position)
                 i.putExtra("description", data[position].job_description)
@@ -130,3 +131,9 @@ class ViewJobActivity : Fragment() {
         }
     }
 }
+
+
+
+//compare job_id
+//if same add user_id
+//oname = username

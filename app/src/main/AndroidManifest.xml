@@ -18,7 +18,6 @@
         </activity>
         <activity android:name=".signup.SignUpActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".HomePage"></activity>
         <activity android:name=".addJobActivity"></activity>
         <activity android:name=".StaffHomePage"></activity>
         <activity android:name=".ViewJobActivity"></activity>

@@ -78,25 +78,29 @@ class addJobActivity : AppCompatActivity() {
 
         if (TextUtils.isEmpty(jobPosition)) {
             Toast.makeText(
-                this, "Please enter the position", Toast.LENGTH_SHORT).show()
+                this, "Please enter the position", Toast.LENGTH_SHORT
+            ).show()
         }
 
         if (TextUtils.isEmpty(jobDescription)) {
             Toast.makeText(
-                this, "Please enter the description", Toast.LENGTH_SHORT).show()
+                this, "Please enter the description", Toast.LENGTH_SHORT
+            ).show()
         }
 
         if (TextUtils.isEmpty(jobSalary)) {
             Toast.makeText(
-                this, "Please enter the salary", Toast.LENGTH_SHORT).show()
+                this, "Please enter the salary", Toast.LENGTH_SHORT
+            ).show()
         }
 
         if (TextUtils.isEmpty(jobRequirement)) {
             Toast.makeText(
-                this, "Please enter the requirement", Toast.LENGTH_SHORT).show()
+                this, "Please enter the requirement", Toast.LENGTH_SHORT
+            ).show()
         }
 
-        val userID:String = mAuth.currentUser!!.uid
+        val userID: String = mAuth.currentUser!!.uid
 
         jobDatabase = FirebaseDatabase.getInstance().getReference()
         /*var database = FirebaseDatabase.getInstance()
@@ -119,11 +123,18 @@ class addJobActivity : AppCompatActivity() {
         userRef.addListenerForSingleValueEvent(valueEventListener)*/
 
 
-
         val newJobid = jobDatabase.push().key
 
-        if(newJobid!=null) {
-            val jobb = Job(newJobid, jobPosition, jobDescription, jobSalary, jobRequirement, jobCategory, userID)
+        if (newJobid != null) {
+            val jobb = Job(
+                newJobid,
+                jobPosition,
+                jobDescription,
+                jobSalary,
+                jobRequirement,
+                jobCategory,
+                userID
+            )
             jobDatabase.child("Job").child(newJobid).setValue(jobb).addOnCompleteListener {
                 Toast.makeText(
                     applicationContext,
@@ -141,29 +152,33 @@ class addJobActivity : AppCompatActivity() {
             }*/
     }
 
-    private fun backFunction(){
+    private fun backFunction() {
         startActivity(Intent(this, StaffHomePage::class.java))
 
     }
 
-    public fun retrieveData(){
-        listener = categoryDatabase.addValueEventListener(object: ValueEventListener{
+    public fun retrieveData() {
+        var maxid: Long = 0
+        listener = categoryDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                for (item in p0.getChildren()) {
-                    /*val ct = Category()
-                    ct.setName(p0.child(name.toString()).getValue(Category::class.java)?.getName())
+                if (p0.exists()) {
+                    maxid = p0.childrenCount
+                }
+                    for (i in 1..maxid) {
+                        spinnerDataList.add(p0.child((i).toString()).child("name").value.toString())
+                        /*for (item in p0.getChildren()) {
 
-                    spinnerDataList.add(ct.getName())*/
                     spinnerDataList.add(item.getValue().toString())
                 }
+                adapter.notifyDataSetChanged()*/
+                    }
                 adapter.notifyDataSetChanged()
-            }
 
+            }
             override fun onCancelled(p0: DatabaseError) {
 
             }
-        });
+        })
 
     }
-
 }
