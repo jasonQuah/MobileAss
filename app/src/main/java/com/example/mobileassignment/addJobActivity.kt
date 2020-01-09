@@ -1,32 +1,56 @@
 package com.example.mobileassignment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mobileassignment.models.Jobs
+import com.example.mobileassignment.models.Job
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import kotlinx.android.synthetic.main.add_job.*
-import com.google.firebase.internal.FirebaseAppHelper.getUid
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.util.Log
-import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.sign_up_activity.*
+import com.google.firebase.database.DataSnapshot
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.R.attr.name
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.example.mobileassignment.models.Category
 
 
 class addJobActivity : AppCompatActivity() {
 
     private var mAuth = FirebaseAuth.getInstance()
     private lateinit var jobDatabase: DatabaseReference
+    private lateinit var categoryDatabase: DatabaseReference
+    private lateinit var spinner: Spinner
+    private lateinit var listener: ValueEventListener
+    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var spinnerDataList: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_job)
+
+        spinner = findViewById<Spinner>(R.id.categorySpinner)
+
+        categoryDatabase = FirebaseDatabase.getInstance().getReference("Category");
+
+        spinnerDataList = ArrayList()
+        adapter = ArrayAdapter(
+            this@addJobActivity,
+            android.R.layout.simple_spinner_dropdown_item,
+            spinnerDataList
+        )
+
+        spinner.adapter = adapter
+        retrieveData()
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -49,38 +73,27 @@ class addJobActivity : AppCompatActivity() {
         val jobDescription = addJobsDescription.text.toString().trim()
         val jobSalary = addJobsSalary.text.toString().trim()
         val jobRequirement = addJobsRequirement.text.toString().trim()
+        val jobCategory = categorySpinner.selectedItem.toString()
 
 
         if (TextUtils.isEmpty(jobPosition)) {
             Toast.makeText(
-                this,
-                "Please enter the position",
-                Toast.LENGTH_SHORT
-            ).show()
+                this, "Please enter the position", Toast.LENGTH_SHORT).show()
         }
 
         if (TextUtils.isEmpty(jobDescription)) {
             Toast.makeText(
-                this,
-                "Please enter the description",
-                Toast.LENGTH_SHORT
-            ).show()
+                this, "Please enter the description", Toast.LENGTH_SHORT).show()
         }
 
         if (TextUtils.isEmpty(jobSalary)) {
             Toast.makeText(
-                this,
-                "Please enter the salary",
-                Toast.LENGTH_SHORT
-            ).show()
+                this, "Please enter the salary", Toast.LENGTH_SHORT).show()
         }
 
         if (TextUtils.isEmpty(jobRequirement)) {
             Toast.makeText(
-                this,
-                "Please enter the requirement",
-                Toast.LENGTH_SHORT
-            ).show()
+                this, "Please enter the requirement", Toast.LENGTH_SHORT).show()
         }
 
         val userID:String = mAuth.currentUser!!.uid
@@ -108,9 +121,9 @@ class addJobActivity : AppCompatActivity() {
 
 
         val newJobid = jobDatabase.push().key
-        if(newJobid!=null) {
 
-            val jobb = Jobs(newJobid, jobPosition, jobDescription, jobSalary, jobRequirement, userID)
+        if(newJobid!=null) {
+            val jobb = Job(newJobid, jobPosition, jobDescription, jobSalary, jobRequirement, jobCategory, userID)
             jobDatabase.child("Job").child(newJobid).setValue(jobb).addOnCompleteListener {
                 Toast.makeText(
                     applicationContext,
@@ -128,11 +141,28 @@ class addJobActivity : AppCompatActivity() {
             }*/
     }
 
-
-
     private fun backFunction(){
+        startActivity(Intent(this, StaffHomePage::class.java))
 
+    }
 
+    public fun retrieveData(){
+        listener = categoryDatabase.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                for (item in p0.getChildren()) {
+                    /*val ct = Category()
+                    ct.setName(p0.child(name.toString()).getValue(Category::class.java)?.getName())
+
+                    spinnerDataList.add(ct.getName())*/
+                    spinnerDataList.add(item.getValue().toString())
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        });
 
     }
 

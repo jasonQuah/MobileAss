@@ -11,29 +11,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/addJob"
-        app:layout_constraintBottom_toTopOf="@+id/editjobBtn"
+        app:layout_constraintBottom_toTopOf="@+id/viewjobBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/editjobBtn"
+        android:id="@+id/viewjobBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/editJob"
+        android:text="@string/viewJob"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:id="@+id/deletejobBtn"
+        android:id="@+id/logoutBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/deleteJob"
+        android:text="@string/logoUt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editjobBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/viewjobBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

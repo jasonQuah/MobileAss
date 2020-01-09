@@ -30,13 +30,11 @@ class MainActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             finish()
             startActivity(Intent(this, LoginActivity::class.java))
-
         }
 
         registerBtn.setOnClickListener {
             finish()
             startActivity(Intent(this, SignUpActivity::class.java))
-
         }
 
         resetPasswordText.setOnClickListener(){

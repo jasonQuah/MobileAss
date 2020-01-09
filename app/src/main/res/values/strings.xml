@@ -62,4 +62,8 @@
     <string name="addJob">Add Job</string>
     <string name="editJob">Edit Job</string>
     <string name="deleteJob">Delete Job</string>
+    <string name="logoUt">Logout</string>
+    <string name="viewJob">View Job</string>
+    <string name="companyNamE">Company Name</string>
+    <string name="location">Job Address</string>
 </resources>
