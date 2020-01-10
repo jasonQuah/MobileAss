@@ -83,27 +83,31 @@ class JobDetailsActivity : AppCompatActivity() {
                             override fun onDataChange(ds: DataSnapshot) {
                                 if (ds.exists())
                                     maxid = ds.childrenCount
-                                for (i in 1..maxid) {
-                                    if (ds.child((i).toString()).child("user_id").value.toString().equals(userId)) {
+                                else
+                                    maxid = 0
+                                for (q in 1..maxid) {
+                                    if (ds.child((q).toString()).child("user_id").value.toString().equals(userId)) {
                                         username =
-                                            ds.child((i).toString()).child("user_name")
+                                            ds.child((q).toString()).child("user_name")
                                                 .value.toString()
                                         userAddress =
-                                            ds.child((i).toString()).child("user_address")
+                                            ds.child((q).toString()).child("user_address")
                                                 .value.toString()
                                         userfake =
-                                            ds.child((i).toString()).child("user_age")
+                                            ds.child((q).toString()).child("user_age")
                                                 .value.toString()
-                                    }
-                                }
                                         data.add(cardViewApplication(
-                                                username,
-                                                userAddress,
-                                                userfake,
-                                                userId
-                                            )
+                                            username,
+                                            userAddress,
+                                            userfake,
+                                            userId
+                                        )
                                         )
                                         tv.text = userId
+                                    }
+                                }
+
+
                             }
                             override fun onCancelled(ds1: DatabaseError) {
                             }

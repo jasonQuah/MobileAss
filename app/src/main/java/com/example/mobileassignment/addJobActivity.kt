@@ -19,6 +19,7 @@ class addJobActivity : AppCompatActivity() {
 
     private var mAuth = FirebaseAuth.getInstance()
     private lateinit var jobDatabase: DatabaseReference
+    private lateinit var jobDatabase1: DatabaseReference
     private lateinit var categoryDatabase: DatabaseReference
     private lateinit var spinner: Spinner
     private lateinit var listener: ValueEventListener
@@ -95,9 +96,13 @@ class addJobActivity : AppCompatActivity() {
 
         jobDatabase = FirebaseDatabase.getInstance().getReference()
 
+
         val newJobid = jobDatabase.push().key
 
-        if (newJobid != null && !TextUtils.isEmpty(jobPosition) && !TextUtils.isEmpty(jobDescription) && !TextUtils.isEmpty(jobSalary) && !TextUtils.isEmpty(jobRequirement)) {
+        if (newJobid != null && !TextUtils.isEmpty(jobPosition) && !TextUtils.isEmpty(jobDescription) && !TextUtils.isEmpty(
+                jobSalary
+            ) && !TextUtils.isEmpty(jobRequirement)
+        ) {
             val jobb = addJob(
                 newJobid,
                 jobPosition,
@@ -107,28 +112,35 @@ class addJobActivity : AppCompatActivity() {
                 jobCategory,
                 userID
             )
-            var maxid: Long = 0
-            jobDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+
+            jobDatabase1 = FirebaseDatabase.getInstance().getReference().child("Job")
+
+            var maxid1: Long = 0
+            jobDatabase1.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists())
-                        maxid = dataSnapshot.childrenCount
-                    jobDatabase.child("Job").child((maxid+1).toString()).setValue(jobb).addOnCompleteListener {
-                        Toast.makeText(
-                            applicationContext,
-                            "Job Saved Successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        maxid1 = dataSnapshot.childrenCount
+                    jobDatabase1.child((maxid1 + 1).toString()).setValue(jobb)
+                        .addOnCompleteListener {
+                            Toast.makeText(
+                                applicationContext,
+                                "Job Saved Successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                        addJobsPosition.setText("")
-                        addJobsDescription.setText("")
-                        addJobsSalary.setText("")
-                        addJobsRequirement.setText("")
-                    }
+                            addJobsPosition.setText("")
+                            addJobsDescription.setText("")
+                            addJobsSalary.setText("")
+                            addJobsRequirement.setText("")
+                        }
                 }
-                override fun onCancelled(databaseError: DatabaseError) {}
+
+                override fun onCancelled(databaseError: DatabaseError) {
+
+                }
             })
 
-        } else{
+        } else {
             Toast.makeText(
                 applicationContext,
                 "Job Saved failed",
@@ -149,12 +161,13 @@ class addJobActivity : AppCompatActivity() {
                 if (p0.exists()) {
                     maxid = p0.childrenCount
                 }
-                    for (i in 1..maxid) {
-                        spinnerDataList.add(p0.child((i).toString()).child("name").value.toString())
-                    }
+                for (i in 1..maxid) {
+                    spinnerDataList.add(p0.child((i).toString()).child("name").value.toString())
+                }
                 adapter.notifyDataSetChanged()
 
             }
+
             override fun onCancelled(p0: DatabaseError) {
             }
         })
