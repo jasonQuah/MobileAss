@@ -74,6 +74,7 @@ class JobDetailsActivity : AppCompatActivity() {
                         var username: String = ""
                         var userAddress: String = ""
                         var userfake: String = ""
+                        var userIdd: String = ""
                         var userId: String =
                             p0.child(i.toString()).child("userId").value.toString()
 
@@ -83,8 +84,6 @@ class JobDetailsActivity : AppCompatActivity() {
                             override fun onDataChange(ds: DataSnapshot) {
                                 if (ds.exists())
                                     maxid = ds.childrenCount
-                                else
-                                    maxid = 0
                                 for (q in 1..maxid) {
                                     if (ds.child((q).toString()).child("user_id").value.toString().equals(userId)) {
                                         username =
@@ -96,17 +95,17 @@ class JobDetailsActivity : AppCompatActivity() {
                                         userfake =
                                             ds.child((q).toString()).child("user_age")
                                                 .value.toString()
+                                        userIdd =
+                                            p0.child(i.toString()).child("userId").value.toString()
+                                    }
+                                }
                                         data.add(cardViewApplication(
                                             username,
                                             userAddress,
                                             userfake,
-                                            userId
-                                        )
-                                        )
+                                            userIdd
+                                        ))
                                         tv.text = userId
-                                    }
-                                }
-
 
                             }
                             override fun onCancelled(ds1: DatabaseError) {
