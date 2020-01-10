@@ -201,7 +201,7 @@ class SignUpActivity : AppCompatActivity() {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             if (dataSnapshot.exists())
                                 maxid = dataSnapshot.childrenCount
-                            userDatabase.child((maxid-3).toString()).setValue(userObject).addOnCompleteListener {
+                            userDatabase.child((maxid).toString()).setValue(userObject).addOnCompleteListener {
                                 Toast.makeText(
                                     baseContext, "Sign In successful.",
                                     Toast.LENGTH_SHORT

@@ -24,7 +24,6 @@ class JobDetailsActivity : AppCompatActivity() {
     private lateinit var jobDatabase: DatabaseReference
     private lateinit var applyDatabase: DatabaseReference
     private lateinit var userDatabase: DatabaseReference
-    private lateinit var finderDatabase: DatabaseReference
     private val data = ArrayList<cardViewApplication>()
     private lateinit var loManage: RecyclerView.LayoutManager
     var maxid: Long = 0
@@ -44,8 +43,6 @@ class JobDetailsActivity : AppCompatActivity() {
 
         jobDatabase = FirebaseDatabase.getInstance().reference.child("Job")
 
-        var jobIID: String = "3"
-
         jobDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists())
@@ -53,7 +50,7 @@ class JobDetailsActivity : AppCompatActivity() {
                 for (i in 1..maxid){
                     if(p0.child((i).toString()).child("jobid").value.toString().equals(jobId)){
                         profiletxt.setText(p0.child((i).toString()).child("position").value.toString())
-                        salarytxt.setText(p0.child((i).toString()).child("salary").value.toString())
+                        salarytxt.setText("RM" + p0.child((i).toString()).child("salary").value.toString())
                         requirementtxt.text =  p0.child((i).toString()).child("requirement").value.toString()
                         descriptiontxt.text =  p0.child((i).toString()).child("desc").value.toString()
                         categorytxt.text =  p0.child((i).toString()).child("category").value.toString()
@@ -75,38 +72,27 @@ class JobDetailsActivity : AppCompatActivity() {
                 for (i in 1..maxid) {
                     if (p0.child((i).toString()).child("jobId").value.toString().equals(jobId)) {
                         var username: String = ""
-                        var userAddress = ""
-                        var userAge: String = ""
+                        var userAddress: String = ""
                         var userfake: String = ""
                         var userId: String =
                             p0.child(i.toString()).child("userId").value.toString()
 
-                        /*finderDatabase = FirebaseDatabase.getInstance().getReference("Finder")
-
-                        finderDatabase.addListenerForSingleValueEvent(object: ValueEventListener{
-                            override fun onDataChange(ds: DataSnapshot) {
-                                userAge = ds.child(userId).child("age").value.toString()
-                            }
-                            override fun onCancelled(p0: DatabaseError) {
-                            }
-                        })*/
-
                         userDatabase = FirebaseDatabase.getInstance().reference.child("User")
 
                         userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(ds1: DataSnapshot) {
-                                if (ds1.exists())
-                                    maxid = ds1.childrenCount
+                            override fun onDataChange(ds: DataSnapshot) {
+                                if (ds.exists())
+                                    maxid = ds.childrenCount
                                 for (i in 1..maxid) {
-                                    if (ds1.child((i).toString()).child("user_id").value.toString().equals(userId)) {
+                                    if (ds.child((i).toString()).child("user_id").value.toString().equals(userId)) {
                                         username =
-                                            ds1.child((i).toString()).child("user_name")
+                                            ds.child((i).toString()).child("user_name")
                                                 .value.toString()
                                         userAddress =
-                                            ds1.child((i).toString()).child("user_address")
+                                            ds.child((i).toString()).child("user_address")
                                                 .value.toString()
                                         userfake =
-                                            ds1.child((i).toString()).child("user_age")
+                                            ds.child((i).toString()).child("user_age")
                                                 .value.toString()
                                     }
                                 }

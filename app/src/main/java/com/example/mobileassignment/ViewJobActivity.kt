@@ -50,6 +50,7 @@ class ViewJobActivity : AppCompatActivity() {
                         var comName: String = ""
                         var companyId: String =
                             p0.child(i.toString()).child("userId").value.toString()
+
                         userDatabase = FirebaseDatabase.getInstance().reference.child("User")
 
                         userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -57,10 +58,7 @@ class ViewJobActivity : AppCompatActivity() {
                                 if (ds.exists())
                                     maxid = ds.childrenCount
                                 for (i in 1..maxid) {
-                                    if (ds.child((i).toString()).child("user_id").value.toString().equals(
-                                            companyId
-                                        )
-                                    ) {
+                                    if (ds.child((i).toString()).child("user_id").value.toString().equals(companyId)) {
                                         comName =
                                             ds.child((i).toString()).child("user_name").value.toString()
                                     }
