@@ -3,7 +3,9 @@ package com.example.mobileassignment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,16 +35,23 @@ class JobDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.job_details)
         var jobId: String = intent.getStringExtra("jobId")
 
+        val bckBtn = findViewById<Button>(R.id.bckBtn)
+
+        bckBtn.setOnClickListener{
+            finish()
+            startActivity(Intent(this, ViewJobActivity::class.java))
+        }
+
         jobDatabase = FirebaseDatabase.getInstance().reference.child("Job")
 
-        var jobIID: String = "8"
+        var jobIID: String = "3"
 
         jobDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists())
                     maxid = p0.childrenCount
                 for (i in 1..maxid){
-                    if((i).toString().equals(jobIID)){
+                    if(p0.child((i).toString()).child("jobid").value.toString().equals(jobId)){
                         profiletxt.setText(p0.child((i).toString()).child("position").value.toString())
                         salarytxt.setText(p0.child((i).toString()).child("salary").value.toString())
                         requirementtxt.text =  p0.child((i).toString()).child("requirement").value.toString()
@@ -68,10 +77,11 @@ class JobDetailsActivity : AppCompatActivity() {
                         var username: String = ""
                         var userAddress = ""
                         var userAge: String = ""
+                        var userfake: String = ""
                         var userId: String =
                             p0.child(i.toString()).child("userId").value.toString()
 
-                        finderDatabase = FirebaseDatabase.getInstance().getReference("Finder")
+                        /*finderDatabase = FirebaseDatabase.getInstance().getReference("Finder")
 
                         finderDatabase.addListenerForSingleValueEvent(object: ValueEventListener{
                             override fun onDataChange(ds: DataSnapshot) {
@@ -79,25 +89,37 @@ class JobDetailsActivity : AppCompatActivity() {
                             }
                             override fun onCancelled(p0: DatabaseError) {
                             }
-                        })
+                        })*/
 
                         userDatabase = FirebaseDatabase.getInstance().reference.child("User")
 
                         userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(ds: DataSnapshot) {
-                                username = ds.child(userId).child("user_name").value.toString()
-                                userAddress = ds.child(userId).child("user_address").value.toString()
-                                data.add(
-                                    cardViewApplication(
-                                        username,
-                                        userAddress,
-                                        userAge,
-                                        userId
-                                    )
-                                )
-                                tv.text = userId
+                            override fun onDataChange(ds1: DataSnapshot) {
+                                if (ds1.exists())
+                                    maxid = ds1.childrenCount
+                                for (i in 1..maxid) {
+                                    if (ds1.child((i).toString()).child("user_id").value.toString().equals(userId)) {
+                                        username =
+                                            ds1.child((i).toString()).child("user_name")
+                                                .value.toString()
+                                        userAddress =
+                                            ds1.child((i).toString()).child("user_address")
+                                                .value.toString()
+                                        userfake =
+                                            ds1.child((i).toString()).child("user_age")
+                                                .value.toString()
+                                    }
+                                }
+                                        data.add(cardViewApplication(
+                                                username,
+                                                userAddress,
+                                                userfake,
+                                                userId
+                                            )
+                                        )
+                                        tv.text = userId
                             }
-                            override fun onCancelled(p0: DatabaseError) {
+                            override fun onCancelled(ds1: DatabaseError) {
                             }
                         })
                     }

@@ -54,16 +54,26 @@ class ViewJobActivity : AppCompatActivity() {
 
                         userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(ds: DataSnapshot) {
-                                comName = ds.child(companyId).child("user_name").value.toString()
+                                if (ds.exists())
+                                    maxid = ds.childrenCount
+                                for (i in 1..maxid) {
+                                    if (ds.child((i).toString()).child("user_id").value.toString().equals(
+                                            companyId
+                                        )
+                                    ) {
+                                        comName =
+                                            ds.child((i).toString()).child("user_name").value.toString()
+                                    }
+                                }
                                 data.add(
                                     ViewJob(
                                         p0.child((i).toString()).child("position").value.toString(),
                                         comName,
                                         p0.child((i).toString()).child("desc").value.toString(),
-                                        p0.child((i).toString()).child("id").value.toString()
+                                        p0.child((i).toString()).child("jobid").value.toString()
                                     )
                                 )
-                                tv.text = p0.child((i).toString()).child("id").value.toString()
+                                tv.text = p0.child((i).toString()).child("jobid").value.toString()
                             }
                             override fun onCancelled(p0: DatabaseError) {
                             }

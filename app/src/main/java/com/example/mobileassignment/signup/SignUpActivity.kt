@@ -13,7 +13,10 @@ import com.example.mobileassignment.models.Education
 import com.example.mobileassignment.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.sign_up_activity.*
 import kotlinx.android.synthetic.main.sign_up_education.*
 
@@ -193,15 +196,21 @@ class SignUpActivity : AppCompatActivity() {
                     updateUI(user)
 
 
-                    userDatabase.child(userId!!).setValue(userObject).addOnCompleteListener {
-                        Toast.makeText(
-                            applicationContext,
-                            "Your register is successfully.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    var maxid: Long = 0
+                    userDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if (dataSnapshot.exists())
+                                maxid = dataSnapshot.childrenCount
+                            userDatabase.child((maxid-3).toString()).setValue(userObject).addOnCompleteListener {
+                                Toast.makeText(
+                                    baseContext, "Sign In successful.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
-//                        saveUserEducation()
-                    }
+                            }
+                        }
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
 
                 } else {
                     Toast.makeText(
